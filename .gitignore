@@ -1,0 +1,11 @@
+# dep
+node_modules
+.DS_Store
+#editor
+.vscode
+.idea
+.dist
+bin
+dist
+log
+package-lock.json

@@ -1,0 +1,10 @@
+# 请求path
+path:
+  health: '/health'
+
+# response params
+response:
+  errors:
+    1001: 'params error'
+    1002: 'mip compile error'
+
