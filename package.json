@@ -61,6 +61,7 @@
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.2.1",
     "yaml": "^1.7.2",
-    "yargs": "^14.2.0"
+    "yargs": "^14.2.0",
+    "xdatetime": "^1.0.8"
   }
 }
