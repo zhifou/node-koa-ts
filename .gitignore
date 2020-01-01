@@ -8,4 +8,5 @@ node_modules
 bin
 dist
 log
+logs
 package-lock.json

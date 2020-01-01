@@ -13,7 +13,7 @@ import * as log from '../utils/log';
 export const otherGet = async (ctx: Koa.Context, next: Function) => {
     const dt: DateTime = new DateTime(new Date());
     console.log('console:::::', dt.toString());
-    log.access.info(new DateTime().addDays(1).toString('yyyy-MM-dd'));
+    // log.access.info({});
     ctx.success({ctx, message: 'get'});
     await next();
 };

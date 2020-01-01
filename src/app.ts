@@ -5,9 +5,9 @@
 import Koa from 'koa';
 
 import bodyParser from 'koa-bodyparser';
-import router from './routers';
+import router from './routes';
 import response from './middlewares/response';
-import * as log from './utils/log';
+import log from './utils/log';
 
 // Create Koa server
 const app = new Koa();
@@ -24,7 +24,7 @@ app.use(router.routes());
 
 // App error handler
 app.on('error', (err, ctx) => {
-    log.error.info({ctx, message: `${JSON.stringify(err)}`});
+    log.error({ctx, message: `${JSON.stringify(err)}`});
 });
 
 export default app;

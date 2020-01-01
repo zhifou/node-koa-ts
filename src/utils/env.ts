@@ -14,9 +14,9 @@ export const args = yargs.option('i', {
     default: 8848,
     describe: 'listen port',
     type: 'number'
-}).option('log-path', {
+}).option('log', {
     alias: 'logPath',
-    default: './log',
+    default: './logs',
     describe: 'log path',
     type: 'string'
 }).option('env', {

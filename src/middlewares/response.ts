@@ -4,7 +4,7 @@
 
 import Koa from 'koa';
 import {ComposedMiddleware} from 'koa-compose';
-import * as log from '../utils/log';
+import log from '../utils/log';
 import {TStatus, TResponse} from '../types/index';
 
 const SUCCESS_METHOD = 'success';
@@ -28,7 +28,7 @@ const makeRespond = (): Function => {
         ctx.body = resBody;
         // Output log and record time-consuming
         const timeUsed = Date.now() - ctx.accessTime;
-        log.output.info({ctx, message: `output:${timeUsed}`});
+        log.access({ctx, message: `output:${timeUsed}`});
         return ctx;
     };
 };

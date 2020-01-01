@@ -1,124 +1,90 @@
 /**
- * @file logger
+ * @file 日志类
  */
+import Koa from 'koa';
+import {access, error, performance, debug, warn, info} from './winston';
+import * as winston from 'winston';
+import {LeveledLogMethod} from 'winston';
 
-import config from 'config';
-import winston from 'winston';
-import * as path from 'path';
-import * as fs from 'fs';
-import WinstonDailyRotateFile from 'winston-daily-rotate-file';
-import {TransformableInfo} from 'logform';
-import WsTransport from 'winston-transport';
-import * as env from './env';
-const format = winston.format;
-const {combine} = format;
+class Log {
 
-// create log file
-const logDir: string = env.args['log-path'];
+    // 单例实现，类加载时就初始化
+    private static instance = new Log();
 
-// define log transports
-interface Transports {
-    [key: string]: WsTransport;
-}
-const trans: Transports = {
-    console: new winston.transports.Console({
-        level: 'debug'
-    }),
-    performance: new WinstonDailyRotateFile({
-        filename: path.resolve(logDir, 'performance.log'),
-        datePattern: 'YYYY-MM-DD-HH',
-        level: 'debug',
-        // keep this log for a week
-        maxFiles: '7d'
-    }),
-    access: new WinstonDailyRotateFile({
-        filename: path.resolve(logDir, 'access.log'),
-        datePattern: 'YYYY-MM-DD-HH',
-        level: 'info',
-        // keep this log for a week
-        maxFiles: '7d'
-    }),
-    output: new WinstonDailyRotateFile({
-        filename: path.resolve(logDir, 'output.log'),
-        datePattern: 'YYYY-MM-DD-HH',
-        level: 'info',
-        // keep this log for a week
-        maxFiles: '7d'
-    }),
-    error: new WinstonDailyRotateFile({
-        filename: path.resolve(logDir, 'error.log'),
-        datePattern: 'YYYY-MM-DD-HH',
-        level: 'info',
-        // keep this log for a week
-        maxFiles: '7d'
-    }),
-    debug: new WinstonDailyRotateFile({
-        filename: path.resolve(logDir, 'debug.log'),
-        datePattern: 'YYYY-MM-DD-HH',
-        level: 'info',
-        // keep this log for a week
-        maxFiles: '7d'
-    })
-};
+    private constructor() {}
 
-
-// define log Categories
-interface Category {
-    [key: string]: Array<string>;
-}
-interface Categories {
-    [key: string]: Category;
-}
-const categories: Categories = {
-    debug: {
-        trans: ['console', 'debug']
-    },
-    output: {
-        trans: ['console', 'debug', 'output']
-    },
-    access: {
-        trans: ['console',  'debug', 'access']
-    },
-    performance: {
-        trans: ['console',  'debug', 'performance']
-    },
-    error: {
-        trans: ['console',  'debug', 'error']
+    static getInstance(): Log {
+        return Log.instance;
     }
-};
 
-/**
- * 自定义日志format
- * @param info
- */
+    private buildArgs(args: any[]): string {
+        let ret: string = '';
+        if (args && args.length) {
+            const newArgs = args.map(o => {
+                let item: any = o;
+                if (o instanceof Error) {
+                    item = {
+                        message: o.message,
+                        stack: o.stack
+                    };
+                }
+                return JSON.stringify(item);
+            });
+            ret = newArgs.join(',');
+        }
+        return ret;
+    }
 
-const customFormat = (info: TransformableInfo): string => {
-    const {ctx, message, timestamp} = info;
-    const {ip, path, method, request, body = '-'} = ctx;
-    const {requestId = '-', userId = '-', params = '-'} = request.body;
-    return `${timestamp} [${requestId}] [${ip}:${method}:${path}] [${message}] [${userId}:${params}] `
-        + `[${JSON.stringify(body)}]`;
-};
+    private checkArgs(logger: winston.Logger, methodName: string, args: any[]) {
+        if (!args || !args.length) return;
+        let method: LeveledLogMethod = logger.info;
+        switch (methodName) {
+            case 'info':
+                method = logger.info;
+                break;
+            case 'warn':
+                method = logger.warn;
+                break;
+            case 'error':
+                method = logger.error;
+                break;
+            default:
+                method = logger.info;
+        }
+        const ctx = args[0];
+        if (ctx && ctx.request && ctx.response && ctx.cookies && ctx.session) {
+            args.shift();
+            const msg = this.buildArgs(args);
+            method({ctx: ctx, message: msg});
+        } else {
+            const msg = this.buildArgs(args);
+            method({ctx: undefined, message: msg});
+        }
+    }
 
-for (const key in categories) {
-    const item: Category = categories[key];
-    winston.loggers.add(key, {
-        format: combine(
-            format.timestamp({
-                format: 'YYYY-MM-DD HH:mm:ss'
-            }),
-            format.printf(customFormat)
-        ),
-        transports: item['trans'].map((value, index) => {
-            return trans[value];
-        })
-    });
+
+    debug(...args: any[]) {
+        return this.checkArgs(debug, 'info', args);
+    }
+    access(...args: any[]) {
+        return this.checkArgs(access, 'info', args);
+    }
+    info(...args: any[]) {
+        return this.checkArgs(info, 'info', args);
+    }
+    warn(...args: any[]) {
+        return this.checkArgs(warn, 'warn', args);
+    }
+    error(...args: any[]) {
+        return this.checkArgs(error, 'error', args);
+    }
+    performance(...args: any[]) {
+        return this.checkArgs(performance, 'info', args);
+    }
 }
 
-export const loggers = winston.loggers;
-export const debug = winston.loggers.get('debug');
-export const access = winston.loggers.get('access');
-export const performance = winston.loggers.get('performance');
-export const error = winston.loggers.get('error');
-export const output = winston.loggers.get('output');
-export {winston};
+// const singleton1 = Log.getInstance();
+// const singleton2 = Log.getInstance();
+// console.log('log instance:', singleton1 === singleton2); // true
+
+export default Log.getInstance();
