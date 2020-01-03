@@ -1,28 +1,53 @@
 /**
- * @file: other.ts
+ * @file other
+ * @author zhaoyadong
  */
 
 import Koa from 'koa';
-import DateTime from 'xdatetime';
-import * as log from '../utils/log';
+import {mock} from '../decorators/mock';
+import {MOCK_TEST} from '../mocks/test.mock';
+import logger from '../utils/log';
 
-/**
- * GET /other/get
- * Check server health.
- */
-export const otherGet = async (ctx: Koa.Context, next: Function) => {
-    const dt: DateTime = new DateTime(new Date());
-    console.log('console:::::', dt.toString());
-    // log.access.info({});
-    ctx.success({ctx, message: 'get'});
-    await next();
-};
+class Other {
 
-/**
- * GET /other/post
- * Check server health.
- */
-export const otherPost = async (ctx: Koa.Context, next: Function) => {
-    ctx.success({ctx, message: 'post'});
-    await next();
-};
+    constructor() {
+        // 需要将this对象，bind进来，否则在方法中找不到this对象，或者方法实现使用箭头函数，this也指向当前类
+        this.getOther = this.getOther.bind(this);
+    }
+
+    @mock(MOCK_TEST)
+    private _getBNS(): any {
+        return {bns: 'aaaaaa'};
+    }
+
+    /**
+     * 获取
+     * @param ctx
+     * @param next
+     */
+    public async getOther(ctx: Koa.Context, next: Function) {
+        console.log(this);
+        const result = this._getBNS();
+        console.log(result);
+        ctx.success(result);
+
+        await next();
+    }
+
+    // /**
+    //  * 获取
+    //  * @param ctx
+    //  * @param next
+    //  */
+    // public getOther = async(ctx: Koa.Context, next: Function) => {
+    //     console.log(this);
+    //     const result = this._getBNS();
+    //     console.log(result);
+    //     ctx.success(result);
+    //
+    //     await next();
+    // }
+
+}
+
+export default new Other();

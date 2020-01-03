@@ -20,8 +20,8 @@ export const args = yargs.option('i', {
     describe: 'log path',
     type: 'string'
 }).option('env', {
-    default: 'offline',
+    default: 'default',
     describe: 'runtime environment',
-    choices: ['offline', 'preonline', 'online']
+    choices: ['default', 'offline', 'preonline', 'online']
 }).help('h').argv;
 

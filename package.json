@@ -34,6 +34,7 @@
     "@types/lodash": "^4.14.146",
     "@types/shelljs": "^0.8.6",
     "@types/yargs": "^13.0.3",
+    "@types/koa2-cors": "^2.0.1",
     "lint-staged": "^9.4.2",
     "nodemon": "^1.19.4",
     "shelljs": "^0.8.3",
@@ -62,6 +63,7 @@
     "winston-daily-rotate-file": "^4.2.1",
     "yaml": "^1.7.2",
     "yargs": "^14.2.0",
-    "xdatetime": "^1.0.8"
+    "xdatetime": "^1.0.8",
+    "koa2-cors": "^2.0.6"
   }
 }
