@@ -63,7 +63,7 @@
     "winston-daily-rotate-file": "^4.2.1",
     "yaml": "^1.7.2",
     "yargs": "^14.2.0",
-    "xdatetime": "^1.0.8",
+    "xdatetime": "^1.2.7",
     "koa2-cors": "^2.0.6"
   }
 }

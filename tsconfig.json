@@ -3,7 +3,7 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "target": "es6",
+        "target": "esnext",
         "noImplicitAny": true,
         "moduleResolution": "node",
         "sourceMap": false,

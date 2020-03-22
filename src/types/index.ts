@@ -17,3 +17,10 @@ export type TResponse = {
     data: TRespData;
     message: TMessage;
 };
+
+/**
+ * 构造函数类型
+ */
+export interface IConstructable {
+    new (...args: any[]): any;
+}
