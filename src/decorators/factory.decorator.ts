@@ -18,6 +18,7 @@ const logProperty = function (target: any, propertyName: string) {
 
 // 装饰器工厂，根据传入的参数调用相应的装饰器
 export function log(...args: any[]) {
+
     switch (args.length) {
         case 3: // 可能是方法装饰器或参数装饰器
             // 如果第三个参数是数字，那么它是索引，所以这是参数装饰器

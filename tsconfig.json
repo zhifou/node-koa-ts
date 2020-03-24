@@ -6,6 +6,10 @@
         "target": "esnext",
         "noImplicitAny": true,
         "moduleResolution": "node",
+        // 是否允许把json文件当做模块进行解析
+        "resolveJsonModule": true,
+        // 所有的语法都会进行严格的检查
+        // "strict": true,
         "sourceMap": false,
         "outDir": "dist",
         "baseUrl": ".",
@@ -20,6 +24,7 @@
         }
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "types/**/*"
     ]
 }

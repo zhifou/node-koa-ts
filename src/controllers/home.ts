@@ -19,7 +19,7 @@ class Home {
     }
 
     @defaultValue
-    name: string;
+    name: string = '';
 
     /**
      * 首页
