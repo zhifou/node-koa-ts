@@ -9,9 +9,19 @@ import cors from 'koa2-cors';
 import router from './routes';
 import response from './middlewares/response';
 import log from './utils/log';
+import jwt from 'jsonwebtoken';
+import jwtKoa from 'koa-jwt';
 
 // Create Koa server
 const app = new Koa();
+
+// jwt secret
+const secret = 'jwt demo';
+
+// 使用jwtKoa验证
+// app.use(jwtKoa({secret}).unless({
+//     path: [/^\/api\/login/] // 数组中的路径不需要通过jwt验证
+// }));
 
 // Koa configuration
 // Json limit

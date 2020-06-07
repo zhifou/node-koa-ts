@@ -9,6 +9,10 @@ import {defaultValue} from '../decorators/default.decorator';
 import {performance} from '../decorators/performance';
 import logger from '../utils/log';
 import {Employee} from '../decorators/factory.decorator';
+import jwt from 'jsonwebtoken';
+import {promisify} from 'util';
+
+const verify = promisify(jwt.verify); // 解密
 
 @classDecorator
 class Home {
@@ -28,6 +32,8 @@ class Home {
      */
     @performance()
     public async index(ctx: Koa.Context, next: Function) {
+        const token = ctx.header.authorization;
+
         const e: Employee = new Employee('zhangsan');
         e.greet('hello world');
 

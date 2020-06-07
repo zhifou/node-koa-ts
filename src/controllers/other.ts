@@ -7,6 +7,7 @@ import Koa from 'koa';
 import {mock} from '../decorators/mock';
 import {MOCK_TEST} from '../mocks/test.mock';
 import logger from '../utils/log';
+import DateTime from 'xdatetime';
 
 class Other {
 
@@ -26,7 +27,15 @@ class Other {
      * @param next
      */
     public async getOther(ctx: Koa.Context, next: Function) {
-        console.log(this);
+        const dt: DateTime = new DateTime();
+        const a: Date = new Date();
+        console.log('typeof: ', typeof DateTime);
+        console.log('typeof: ', typeof Date);
+        console.log('typeof: ',  (a instanceof Date));
+        console.log('typeof: ',  (dt instanceof DateTime));
+        console.log(new DateTime(2020, 2, 29).formatPassTime());
+        console.log(DateTime.format(new Date(), 'yyyyMMdd hh:mm'));
+        console.log(DateTime.format(new DateTime(), 'yyyy-MM-dd hh:mm:ss'));
         const result = this._getBNS();
         console.log(result);
         ctx.success(result);
