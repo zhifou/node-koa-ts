@@ -9,6 +9,7 @@ import cors from 'koa2-cors';
 import router from './routes';
 import response from './middlewares/response';
 import log from './utils/log';
+import enforceHttps from 'koa-sslify';
 import jwt from 'jsonwebtoken';
 import jwtKoa from 'koa-jwt';
 
@@ -46,6 +47,14 @@ app.use(response());
 
 // Router handler
 app.use(router.routes());
+
+// Force HTTPS using default resolver
+// 使用默认解析强制使用 HTTPS
+app.use(
+    enforceHttps({
+        port: 443
+    })
+);
 
 // App error handler
 app.on('error', (err, ctx) => {
