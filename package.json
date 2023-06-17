@@ -1,12 +1,12 @@
 {
-  "name": "node-typescript",
+  "name": "node-koa-ts",
   "version": "1.0.0",
-  "description": "node-typescript",
+  "description": "node-koa-ts",
   "main": "index.js",
   "scripts": {
     "dev": "set NODE_ENV=dev && nodemon --exec ./node_modules/.bin/ts-node -- src/index.ts",
     "build": "npm run build-ts && npm run copy-static-assets",
-    "pm2": "npx pm2 start -n 'node-typescript' ./dist/index.js --  -p 8848  --logPath './log' --env 'offline'",
+    "pm2": "npx pm2 start -n 'node-koa-ts' ./dist/index.js --  -p 8848  --logPath './log' --env 'offline'",
     "build-ts": "tsc",
     "copy-static-assets": "ts-node copyStaticAssets.ts",
     "tslint": "tslint -c tslint.json -p tsconfig.json"
