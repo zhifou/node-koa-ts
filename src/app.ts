@@ -20,9 +20,11 @@ const app = new Koa();
 const secret = "jwt demo";
 
 // 使用jwtKoa验证
-// app.use(jwtKoa({secret}).unless({
-//     path: [/^\/api\/login/] // 数组中的路径不需要通过jwt验证
-// }));
+app.use(
+    jwtKoa({ secret }).unless({
+        path: [/^\/api\/login/], // 数组中的路径不需要通过jwt验证
+    })
+);
 // app.js
 
 // Koa configuration
